@@ -435,29 +435,29 @@ namespace Toolbox.NETMF.Hardware
 
         public static void Compass_Heading()
         {
-            float MAG_X;
-            float MAG_Y;
-            float cos_roll;
-            float sin_roll;
-            float cos_pitch;
-            float sin_pitch;
+            double MAG_X;
+            double MAG_Y;
+            double cos_roll;
+            double sin_roll;
+            double cos_pitch;
+            double sin_pitch;
 
-            cos_roll = (float)System.Math.Cos(MinIMU9AHRS.roll);
-            sin_roll = (float)System.Math.Sin(MinIMU9AHRS.roll);
-            cos_pitch = (float)System.Math.Cos(MinIMU9AHRS.pitch);
-            sin_pitch = (float)System.Math.Sin(MinIMU9AHRS.pitch);
+            cos_roll = (double)System.Math.Cos(MinIMU9AHRS.roll);
+            sin_roll = (double)System.Math.Sin(MinIMU9AHRS.roll);
+            cos_pitch = (double)System.Math.Cos(MinIMU9AHRS.pitch);
+            sin_pitch = (double)System.Math.Sin(MinIMU9AHRS.pitch);
 
             // adjust for LSM303 compass axis offsets/sensitivity differences by scaling to +/-0.5 range
-            MinIMU9AHRS.c_magnetom_x = (float)((MinIMU9AHRS.magnetom_x - MinIMU9AHRS.SENSOR_SIGN[6] * MinIMU9AHRS.M_X_MIN) / (MinIMU9AHRS.M_X_MAX - MinIMU9AHRS.M_X_MIN) - MinIMU9AHRS.SENSOR_SIGN[6] * 0.5);
-            MinIMU9AHRS.c_magnetom_y = (float)((MinIMU9AHRS.magnetom_y - MinIMU9AHRS.SENSOR_SIGN[7] * MinIMU9AHRS.M_Y_MIN) / (MinIMU9AHRS.M_Y_MAX - MinIMU9AHRS.M_Y_MIN) - MinIMU9AHRS.SENSOR_SIGN[7] * 0.5);
-            MinIMU9AHRS.c_magnetom_z = (float)((MinIMU9AHRS.magnetom_z - MinIMU9AHRS.SENSOR_SIGN[8] * MinIMU9AHRS.M_Z_MIN) / (MinIMU9AHRS.M_Z_MAX - MinIMU9AHRS.M_Z_MIN) - MinIMU9AHRS.SENSOR_SIGN[8] * 0.5);
+            MinIMU9AHRS.c_magnetom_x = (double)((MinIMU9AHRS.magnetom_x - MinIMU9AHRS.SENSOR_SIGN[6] * MinIMU9AHRS.M_X_MIN) / (MinIMU9AHRS.M_X_MAX - MinIMU9AHRS.M_X_MIN) - MinIMU9AHRS.SENSOR_SIGN[6] * 0.5);
+            MinIMU9AHRS.c_magnetom_y = (double)((MinIMU9AHRS.magnetom_y - MinIMU9AHRS.SENSOR_SIGN[7] * MinIMU9AHRS.M_Y_MIN) / (MinIMU9AHRS.M_Y_MAX - MinIMU9AHRS.M_Y_MIN) - MinIMU9AHRS.SENSOR_SIGN[7] * 0.5);
+            MinIMU9AHRS.c_magnetom_z = (double)((MinIMU9AHRS.magnetom_z - MinIMU9AHRS.SENSOR_SIGN[8] * MinIMU9AHRS.M_Z_MIN) / (MinIMU9AHRS.M_Z_MAX - MinIMU9AHRS.M_Z_MIN) - MinIMU9AHRS.SENSOR_SIGN[8] * 0.5);
 
             // Tilt compensated Magnetic filed X:
             MAG_X = MinIMU9AHRS.c_magnetom_x * cos_pitch + MinIMU9AHRS.c_magnetom_y * sin_roll * sin_pitch + MinIMU9AHRS.c_magnetom_z * cos_roll * sin_pitch;
             // Tilt compensated Magnetic filed Y:
             MAG_Y = MinIMU9AHRS.c_magnetom_y * cos_roll - MinIMU9AHRS.c_magnetom_z * sin_roll;
             // Magnetic Heading
-            MinIMU9AHRS.MAG_Heading = (float)System.Math.Atan2(-MAG_Y, MAG_X);
+            MinIMU9AHRS.MAG_Heading = (double)System.Math.Atan2(-MAG_Y, MAG_X);
         }
 
         // Private Methods //////////////////////////////////////////////////////////////

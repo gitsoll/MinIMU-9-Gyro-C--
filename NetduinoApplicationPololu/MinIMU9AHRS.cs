@@ -106,8 +106,8 @@ public static int STATUS_LED  = 13;
 
 public static double G_Dt=0.02;    // Integration time (DCM algorithm)  We will run the integration loop at 50Hz if possible
 
-static long timer = 0;   //general purpuse timer
-static long timer_old;
+static DateTime timer ;   //general purpuse timer
+static DateTime timer_old;
 static long timer24 = 0; //Second timer used to print values 
 public static int[] AN = new int[6]; //array that stores the gyro and accelerometer data
 public static int[] AN_OFFSET = new int[6] { 0, 0, 0, 0, 0, 0 }; //Array that stores the Offset of the sensors
@@ -121,46 +121,46 @@ public static int accel_z;
 public static int magnetom_x;
 public static int magnetom_y;
 public static int magnetom_z;
-public static float c_magnetom_x;
-public static float c_magnetom_y;
-public static float c_magnetom_z;
-public static float MAG_Heading;
+public static double c_magnetom_x;
+public static double c_magnetom_y;
+public static double c_magnetom_z;
+public static double MAG_Heading;
 
-public static float[] Accel_Vector = new float[3] { 0, 0, 0 }; //Store the acceleration in a vector
-public static float[] Gyro_Vector= new float[3] {0,0,0};//Store the gyros turn rate in a vector
-public static float[] Omega_Vector = new float[3] { 0, 0, 0 }; //Corrected Gyro_Vector data
-public static float[] Omega_P = new float[3] { 0, 0, 0 };//Omega Proportional correction
-public static float[] Omega_I = new float[3] { 0, 0, 0 };//Omega Integrator
-public static float[] Omega = new float[3] { 0, 0, 0 };
+public static double[] Accel_Vector = new double[3] { 0, 0, 0 }; //Store the acceleration in a vector
+public static double[] Gyro_Vector= new double[3] {0,0,0};//Store the gyros turn rate in a vector
+public static double[] Omega_Vector = new double[3] { 0, 0, 0 }; //Corrected Gyro_Vector data
+public static double[] Omega_P = new double[3] { 0, 0, 0 };//Omega Proportional correction
+public static double[] Omega_I = new double[3] { 0, 0, 0 };//Omega Integrator
+public static double[] Omega = new double[3] { 0, 0, 0 };
 
 // Euler angles
-public static float roll;
-public static float pitch;
-public static float yaw;
+public static double roll;
+public static double pitch;
+public static double yaw;
 
-public static float[] errorRollPitch = new float[3] { 0, 0, 0 };
-public static float[] errorYaw = new float[3] { 0, 0, 0 };
+public static double[] errorRollPitch = new double[3] { 0, 0, 0 };
+public static double[] errorYaw = new double[3] { 0, 0, 0 };
 
 static int counter = 0;
 static byte gyro_sat = 0;
 
-public static float[][] DCM_Matrix = new float[3][] {
- new float[3] {
+public static double[][] DCM_Matrix = new double[3][] {
+ new double[3] {
     1,0,0  }
-  ,new float[3]{
+  ,new double[3]{
     0,1,0  }
-  ,new float[3]{
+  ,new double[3]{
     0,0,1  }
 };
-public static float[][] Update_Matrix = new float[3][] { new float[3] { 0, 1, 2 }, new float[3] { 3, 4, 5 }, new float[3] { 6, 7, 8 } }; //Gyros here
+public static double[][] Update_Matrix = new double[3][] { new double[3] { 0, 1, 2 }, new double[3] { 3, 4, 5 }, new double[3] { 6, 7, 8 } }; //Gyros here
 
 
-public static float[][] Temporary_Matrix = new float[3][]{
- new float[3]{
+public static double[][] Temporary_Matrix = new double[3][]{
+ new double[3]{
     0,0,0  }
-  ,new float[3]{
+  ,new double[3]{
     0,0,0  }
-  ,new float[3]{
+  ,new double[3]{
     0,0,0  }
 };
 
@@ -197,20 +197,21 @@ public static void setup()
   Thread.Sleep(2000);
 
 
-  timer = DateTime.Now.Millisecond;
+  timer = DateTime.Now;
   Thread.Sleep(20);
   counter=0;
 }
 
 public static  void loop() //Main Loop
 {
-    if ((DateTime.Now.Millisecond - timer) >= 20)  // Main loop runs at 50Hz
+   if (DateTime.Now.Subtract(timer).Milliseconds >= 20)  // Main loop runs at 50Hz
   {
+      Debug.Print("timer run");
     counter++;
     timer_old = timer;
-    timer = DateTime.Now.Millisecond;
+    timer = DateTime.Now;
     if (timer>timer_old)
-      G_Dt = (timer-timer_old)/1000.0;    // Real time of loop run. We use this on the DCM algorithm (gyro integration time)
+      G_Dt = timer.Subtract(timer_old).Milliseconds/1000.0;    // Real time of loop run. We use this on the DCM algorithm (gyro integration time)
     else
       G_Dt = 0;
     
@@ -237,7 +238,7 @@ public static  void loop() //Main Loop
 }
   public static void printdata()
 {
-   // Debug.Print(string.Concat("Roll:", ToDeg(roll).ToString(), " Pitch:", ToDeg(pitch).ToString(), " Yaw:", ToDeg(yaw).ToString(), "Gyro X:", AN[0].ToString(), " Gyro Y:", AN[1].ToString(), " Gyro Z:", AN[2].ToString(), " Acc X:", AN[3].ToString(), " Acc y:", AN[4].ToString(), " Acc Z:", AN[5].ToString(), " Mag x:", magnetom_x.ToString(), " Mag y:", magnetom_y.ToString(), " Mag z:", magnetom_z.ToString()));
+   Debug.Print(string.Concat("Roll:", roll.ToString(), " Pitch:", pitch.ToString(), " Yaw:", yaw.ToString(), "Gyro X:", AN[0].ToString(), " Gyro Y:", AN[1].ToString(), " Gyro Z:", AN[2].ToString(), " Acc X:", AN[3].ToString(), " Acc y:", AN[4].ToString(), " Acc Z:", AN[5].ToString(), " Mag x:", magnetom_x.ToString(), " Mag y:", magnetom_y.ToString(), " Mag z:", magnetom_z.ToString()));
       
 
       //if (PRINT_EULER == 1)
@@ -272,7 +273,7 @@ public static  void loop() //Main Loop
       //    Debug.Print(magnetom_z.ToString());
       //}
 
-    Debug.Print(String.Concat("DCM", ToDeg(DCM_Matrix[0][0]).ToString(), ",", ToDeg(DCM_Matrix[0][1]).ToString(), ",", ToDeg(DCM_Matrix[0][2]).ToString(), ",", ToDeg(DCM_Matrix[1][0]).ToString(), ",", ToDeg(DCM_Matrix[1][1]).ToString(), ",", ToDeg(DCM_Matrix[1][2]).ToString(), ",", ToDeg(DCM_Matrix[2][0]).ToString(), ",", ToDeg(DCM_Matrix[2][1]).ToString(), ",", ToDeg(DCM_Matrix[2][2]).ToString()));
+   // Debug.Print(String.Concat("DCM", ToDeg(DCM_Matrix[0][0]).ToString(), ",", ToDeg(DCM_Matrix[0][1]).ToString(), ",", ToDeg(DCM_Matrix[0][2]).ToString(), ",", ToDeg(DCM_Matrix[1][0]).ToString(), ",", ToDeg(DCM_Matrix[1][1]).ToString(), ",", ToDeg(DCM_Matrix[1][2]).ToString(), ",", ToDeg(DCM_Matrix[2][0]).ToString(), ",", ToDeg(DCM_Matrix[2][1]).ToString(), ",", ToDeg(DCM_Matrix[2][2]).ToString()));
 
       /*#if PRINT_DCM == 1
       Debug.Print (",DCM:");

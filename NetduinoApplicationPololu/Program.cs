@@ -22,7 +22,7 @@ namespace NetduinoApplicationPololu
 
                 MinIMU9AHRS.loop();
                 MinIMU9AHRS.printdata();
-                Thread.Sleep(500);
+            //  Thread.Sleep(10);
             }
 
         }

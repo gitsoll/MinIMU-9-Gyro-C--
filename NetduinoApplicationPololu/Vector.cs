@@ -36,9 +36,9 @@ with MinIMU-9-Arduino-AHRS. If not, see <http://www.gnu.org/licenses/>.
 */
 
 //Computes the dot product of two vectors
-public static float Vector_Dot_Product(float[] vector1,float[] vector2)
+public static double Vector_Dot_Product(double[] vector1,double[] vector2)
 {
-  float op=0;
+  double op=0;
   
   for(int c=0; c<3; c++)
   {
@@ -49,9 +49,9 @@ public static float Vector_Dot_Product(float[] vector1,float[] vector2)
 }
 
 //Computes the cross product of two vectors
-public static float[] Vector_Cross_Product(float[] v1, float[] v2)
+public static double[] Vector_Cross_Product(double[] v1, double[] v2)
 {
-    float[] vectorOut = new float[3];
+    double[] vectorOut = new double[3];
   vectorOut[0]= (v1[1]*v2[2]) - (v1[2]*v2[1]);
   vectorOut[1]= (v1[2]*v2[0]) - (v1[0]*v2[2]);
   vectorOut[2]= (v1[0]*v2[1]) - (v1[1]*v2[0]);
@@ -59,9 +59,9 @@ public static float[] Vector_Cross_Product(float[] v1, float[] v2)
 }
 
 //Multiply the vector by a scalar. 
-public static float[]  Vector_Scale(float[] vectorIn, float scale2)
+public static double[]  Vector_Scale(double[] vectorIn, double scale2)
 {
-    float[] vectorOut = new float[3];
+    double[] vectorOut = new double[3];
 
   for(int c=0; c<3; c++)
   {
@@ -70,9 +70,9 @@ public static float[]  Vector_Scale(float[] vectorIn, float scale2)
     return vectorOut;
 }
 
-public static float[] Vector_Add( float[] vectorIn1, float[] vectorIn2)
+public static double[] Vector_Add( double[] vectorIn1, double[] vectorIn2)
 {
-    float[] vectorOut = new float[3];
+    double[] vectorOut = new double[3];
   for(int c=0; c<3; c++)
   {
      vectorOut[c]=vectorIn1[c]+vectorIn2[c];
