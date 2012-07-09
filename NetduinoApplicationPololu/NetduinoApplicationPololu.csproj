@@ -32,17 +32,11 @@
   </PropertyGroup>
   <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
-    <Compile Include="DCM.cs" />
-    <Compile Include="helper.cs" />
-    <Compile Include="I2C.cs" />
     <Compile Include="I2CBus.cs" />
-    <Compile Include="L3G4200D.cs" />
-    <Compile Include="LSM303.cs" />
-    <Compile Include="Matrix.cs" />
-    <Compile Include="MinIMU9AHRS.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Magnetometer.cs" />
+    <Compile Include="MinIMU9.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Vector.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.SPOT.Hardware" />

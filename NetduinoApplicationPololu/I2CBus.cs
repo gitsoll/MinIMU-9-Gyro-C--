@@ -1,8 +1,7 @@
 using System;
-using Microsoft.SPOT;
 using Microsoft.SPOT.Hardware;
 
-namespace Toolbox.NETMF.Hardware
+namespace NetduinoApplicationPololu
 {
     public class I2CBus : IDisposable
     {
