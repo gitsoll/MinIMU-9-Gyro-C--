@@ -9,13 +9,36 @@ namespace Toolbox.NETMF.Hardware
         {           
         }
 
-        private Magnetometer _magnetometer;
-        public Magnetometer Magnetometer
+        private Accelaccelerometer _accelaccelerometer;
+        public Accelaccelerometer Accelaccelerometer
         {
-            get { return _magnetometer; }
-            set { _magnetometer = value; }
+            get
+            {
+                return _instance._accelaccelerometer;
+            }
+
         }
 
+        private Magnetometer _magnetometer;
+        public  Magnetometer Magnetometer
+        {
+            get
+            {
+                return _instance._magnetometer;
+            }
+           
+        }
+
+
+        private Gyro _gyro;
+        public Gyro Gyro
+        {
+            get
+            {
+                return _instance._gyro;
+            }
+
+        }
 
         private static MinIMU9 _instance = null;
         private static readonly object LockObject = new object();
@@ -28,6 +51,8 @@ namespace Toolbox.NETMF.Hardware
                 {
                     _instance = new MinIMU9();
                     _instance._magnetometer =  Magnetometer.GetInstance();
+                    _instance._gyro = Gyro.GetInstance();
+                    _instance._accelaccelerometer = Accelaccelerometer.GetInstance();
                 }
                 return _instance;
             }
@@ -36,7 +61,9 @@ namespace Toolbox.NETMF.Hardware
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _instance._magnetometer.Dispose();
+            _instance._gyro.Dispose();
+            _instance._accelaccelerometer.Dispose();
         }
     }
 }

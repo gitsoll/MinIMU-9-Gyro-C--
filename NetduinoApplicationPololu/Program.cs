@@ -1,4 +1,5 @@
-﻿using Microsoft.SPOT;
+﻿using System.Threading;
+using Microsoft.SPOT;
 using Toolbox.NETMF.Hardware;
 
 namespace NetduinoApplicationPololu
@@ -7,28 +8,37 @@ namespace NetduinoApplicationPololu
     {
         public static void Main()
         {
-            Debug.Print("Start app Magnometer test");
+            Debug.Print("Start app test");
             int z = 0;
-            double xmin = 99999, ymin = 99999, zmin = 99999;
-            double xmax = -99999, ymax = -99999, zmax = -99999;
+
             var a =  MinIMU9.GetInstance();
-            while (z < 2000)
+            //a.Magnetometer.MeasurementComplete += Magnetometer_MeasurementComplete;
+            //a.Magnetometer.StartContinuousMeasurements();
+            a.Gyro.MeasurementComplete += new Gyro.MeasurementCompleteEventHandler(Gyro_MeasurementComplete);
+            a.Gyro.StartContinuousMeasurements();
+            //a.Accelaccelerometer.MeasurementComplete += new Accelaccelerometer.MeasurementCompleteEventHandler(Accelaccelerometer_MeasurementComplete);
+            //a.Accelaccelerometer.StartContinuousMeasurements();
+            while (z < 4000)
             {
-                z++;
-                a.Magnetometer.Read();
-                xmin = System.Math.Min(xmin, a.Magnetometer._rawData.x);
-                ymin = System.Math.Min(ymin, a.Magnetometer._rawData.y);
-                zmin = System.Math.Min(zmin, a.Magnetometer._rawData.z);
-
-                xmax = System.Math.Max(xmax, a.Magnetometer._rawData.x);
-                ymax = System.Math.Max(ymax, a.Magnetometer._rawData.y);
-                zmax = System.Math.Max(zmax, a.Magnetometer._rawData.z);
-                Debug.Print("Direction =" + a.Magnetometer.Direction.ToString());
-                //  Thread.Sleep(250);
+                z++;            
+                Thread.Sleep(200);
             }
-            Debug.Print("xmin:" + xmin + " ymin:" + ymin + " zmin:" + zmin);
-            Debug.Print("xmax:" + xmax + " ymax:" + ymax + " zmax:" + zmax);
+        
+        }
 
+        static void Accelaccelerometer_MeasurementComplete(Accelaccelerometer sender, Accelaccelerometer.SensorData sensorData)
+        {
+            Debug.Print(sensorData.ToString());
+        }
+
+        static void Gyro_MeasurementComplete(Gyro sender, Gyro.SensorData sensorData)
+        {
+            Debug.Print(sensorData.ToString());
+        }
+
+        static void Magnetometer_MeasurementComplete(Magnetometer sender, Magnetometer.SensorData sensorData)
+        {
+            Debug.Print(sensorData.ToString());
         }
     }
 }

@@ -32,6 +32,8 @@
   </PropertyGroup>
   <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
+    <Compile Include="Accelaccelerometer.cs" />
+    <Compile Include="Gyro.cs" />
     <Compile Include="I2CBus.cs" />
     <Compile Include="Magnetometer.cs" />
     <Compile Include="MinIMU9.cs" />
